@@ -245,14 +245,38 @@ var render = function() {
     "uni-view",
     { attrs: { _i: 0 } },
     [
-      _vm._l(_vm._$g(1, "f"), function(item, index, $20, $30) {
-        return [
-          _c("CommonList", { key: item["k0"], attrs: { _i: "2-" + $30 } }),
-          _c("divider", { key: item["k1"], attrs: { _i: "3-" + $30 } })
-        ]
-      })
+      _c(
+        "v-uni-scroll-view",
+        {
+          staticClass: _vm._$g(1, "sc"),
+          attrs: {
+            "scroll-x": true,
+            "scroll-into-view": _vm._$g(1, "a-scroll-into-view"),
+            "scroll-with-animation": true,
+            _i: 1
+          }
+        },
+        _vm._l(_vm._$g(2, "f"), function(item, index, $20, $30) {
+          return _c(
+            "uni-view",
+            {
+              key: item,
+              staticClass: _vm._$g("2-" + $30, "sc"),
+              class: _vm._$g("2-" + $30, "c"),
+              attrs: { id: _vm._$g("2-" + $30, "a-id"), _i: "2-" + $30 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
+            },
+            [_vm._v(_vm._$g("2-" + $30, "t0-0"))]
+          )
+        }),
+        1
+      )
     ],
-    2
+    1
   )
 }
 var recyclableRender = false
@@ -425,7 +449,12 @@ var render = function() {
             {
               staticClass: _vm._$g(7, "sc"),
               staticStyle: { width: "90rpx", height: "50rpx" },
-              attrs: { "hover-class": "jello", _i: 7 }
+              attrs: { "hover-class": "jello", _i: 7 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
             },
             [_vm._v("关注")]
           )
@@ -455,7 +484,13 @@ var render = function() {
             "uni-view",
             {
               staticClass: _vm._$g(11, "sc"),
-              attrs: { "hover-class": "jello", _i: 11 }
+              class: _vm._$g(11, "c"),
+              attrs: { "hover-class": "jello", _i: 11 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
             },
             [
               _c("v-uni-text", {
@@ -472,7 +507,13 @@ var render = function() {
             "uni-view",
             {
               staticClass: _vm._$g(14, "sc"),
-              attrs: { "hover-class": "jello", _i: 14 }
+              class: _vm._$g(14, "c"),
+              attrs: { "hover-class": "jello", _i: 14 },
+              on: {
+                click: function($event) {
+                  return _vm.$handleViewEvent($event)
+                }
+              }
             },
             [
               _c("v-uni-text", {

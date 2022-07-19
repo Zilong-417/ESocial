@@ -8,7 +8,7 @@
 				<image class="rounded-circle mr-2" 
 				:src="item.userpic" 
 				style="width: 65rpx;height: 65rpx;" 
-				lazy-load></image>
+				lazy-load ></image>
 				<!--昵称,发布时间-->
 				<view>
 					<view class="font" style="line-height: 1.5;">{{item.username}}</view>
@@ -18,7 +18,7 @@
 			</view>
 			<!--按钮-->
 			<view class="flex align-center justify-center rounded bg-main text-white animated faster" 
-			style="width: 90rpx;height: 50rpx;" hover-class="jello">
+			style="width: 90rpx;height: 50rpx;" hover-class="jello" @click="follow">
 				关注
 			</view>
 			</view>
@@ -32,21 +32,27 @@
 			style="height: 350rpx;width: 100%;"></image>
 			<!--图标按钮-->
 			<view class="flex align-center">
-				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello">
+				<!--顶-->
+				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello" @click="doSupport('support')"
+				:class="item.support.type==='support'?'text-main':''">
 					<text class="iconfont icon-dianzan2 mr-2" ></text>
-					<text>{{item.support.support_count}}</text>
+					<text>{{item.support.support_count>0?item.support.support_count:'赞'}}</text>
 				</view>
-				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello">
+				<!--踩-->
+				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello" @click="doSupport('unsupport')"
+				:class="item.support.type==='unsupport'?'text-main':''">
 					<text class="iconfont icon-cai mr-2" ></text>
-					<text>{{item.support.unsupport_count}}</text>
+					<text>{{item.support.unsupport_count>0?item.support.unsupport_count:'踩'}}</text>
 				</view>
+				<!--评论数-->
 				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello">
 					<text class="iconfont icon-pinglun2 mr-2" ></text>
-					<text>{{item.comment_count}}</text>
+					<text>{{item.comment_count>0?item.comment_count:'评论'}}</text>
 				</view>
+				<!--分享数-->
 				<view class="flex align-center justify-center flex-1 animated faster" hover-class="jello" >
 					<text class="iconfont icon-fenxiang mr-2" ></text>
-					<text>{{item.share_num}}</text>
+					<text>{{item.share_num>0?item.share_num:'分享'}}</text>
 				</view>
 			</view>
 		
@@ -60,6 +66,19 @@
 		props:{
 			item:Object,
 			index:Number
+		},
+		methods:{
+			//关注
+			follow(index){
+				this.$emit('follow',this.index)
+			},
+			//点赞
+			doSupport(type){
+				this.$emit('doSupport',{
+					type,
+					index:this.index
+				})
+			},
 		}
 	}
 	
