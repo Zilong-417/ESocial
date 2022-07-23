@@ -9,22 +9,27 @@
 			:class="tabIndex===index?'text-main font-lg font-weight-bold':''"
 			@click="changeTab(index)">{{item.name}}</view>
 		</scroll-view>
-		<swiper :duration="125" :current="tabIndex" @change="onChangeTab" :key="index" :style="'height:'+scrollH+'px'">
-			<swiper-item v-for="(item,index) in tabList" >
-				<scroll-view scroll-y :style="'height:'+scrollH+'px'">
-					<view v-for="i in 100" :key="i">{{i}}</view>
+		<swiper :duration="125" :current="tabIndex" @change="onChangeTab" 
+		:key="index" :style="'height:'+scrollH+'px'">
+			<swiper-item v-for="(item,index) in newlist" :key="index">
+				<scroll-view scroll-y :style="'height:'+scrollH+'px'" @scrolltolower="loadmore(index)">
+					
+					<block v-for="(item2,index2) in item.list" :key="index2">
+						<CommonList :item='item2' :index="index2" @follow="follow" @doSupport='doSupport' ></CommonList>
+						<divider></divider>
+					</block>
+					
+					<!--加载栏-->
+					<load-more :loadmore='item.loadmore'></load-more>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
-		<!-- <block v-for="(item,index) in list" :key="index">
-			<CommonList :item='item' :index="index" @follow="follow" @doSupport='doSupport' ></CommonList>
-			<divider></divider>
-		</block> -->
 	</view>
 </template>
 
 <script>
 	import CommonList from '@/components/common/common-list.vue'
+	import loadMore from '@/components/common/load-more/load-more.vue'
 	export default {
 		data() {
 			return {
@@ -51,40 +56,7 @@
 				},{
 					name:'本地'
 				}],
-				list:[
-					{
-						username:'小龙',
-						userpic:'../../static/default.jpg',
-						newtime:'2022-7-18 下午15：28',
-						isFollow:false,
-						title:'标题',
-						titlepic:'/static/demo/datapic/1.jpg',
-						support:{
-							type:'support',
-							support_count:1,
-							unsupport_count:2,
-							
-						},
-						comment_count:2,
-						share_num:90
-					},
-					{
-						username:'小龙',
-						userpic:'../../static/default.jpg',
-						newtime:'2022-7-18 下午15：28',
-						isFollow:false,
-						title:'标题',
-						titlepic:'',
-						support:{
-							type:'unsupport',
-							support_count:1,
-							unsupport_count:2,
-							
-						},
-						comment_count:2,
-						share_num:90
-					}
-				]
+				newlist:[]
 			}
 		},
 		onLoad() {
@@ -93,8 +65,50 @@
 					this.scrollH=res.windowHeight-uni.upx2px(100)
 				}
 			})
+			this.getData()
 		},
 		methods: {
+			getData(){
+				var arr=[]
+				for(let i=0;i<this.tabList.length;i++){
+					var obj={
+						//加载类型
+						loadmore:'上拉加载更多',
+						list:[{
+								username:'小龙',
+								userpic:'../../static/default.jpg',
+								newtime:'2022-7-18 下午15：28',
+								isFollow:false,
+								title:'标题',
+								titlepic:'/static/demo/datapic/1.jpg',
+								support:{
+									type:'support',
+									support_count:1,
+									unsupport_count:2,
+								},
+								comment_count:2,
+								share_num:90
+								},
+								{
+									username:'小龙',
+									userpic:'../../static/default.jpg',
+									newtime:'2022-7-18 下午15：28',
+									isFollow:false,
+									title:'标题',
+									titlepic:'/static/demo/datapic/1.jpg',
+									support:{
+										type:'support',
+										support_count:1,
+										unsupport_count:2,
+									},
+										comment_count:2,
+										share_num:90
+								}]
+					}
+					arr.push(obj)
+				}
+				this.newlist=arr
+			},
 			//切换选项
 			changeTab(index){
 				if(this.tabIndex===index){
@@ -135,10 +149,27 @@
 			//监听滑动
 			onChangeTab(e){
 				this.changeTab(e.detail.current)
+			},
+			//上拉加载
+			loadmore(index){
+				//拿到当前列表
+				let item=this.newlist[index]
+				//判断是否处于可加载状态
+				if(item.loadmore!=='上拉加载更多') return
+				//模拟当前列表加载状态
+				item.loadmore="正在加载中...",
+				//模拟数据请求
+				setTimeout(()=>{
+					//加载数据
+					item.list=[...item.list,...item.list]
+					//恢复加载状态
+					item.loadmore="上拉加载更多"
+				},2000)
 			}
 		},
 		components:{
-			CommonList
+			CommonList,
+			loadMore
 		}
 	}
 </script>
