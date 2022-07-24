@@ -13,23 +13,59 @@
 		:key="index" :style="'height:'+scrollH+'px'">
 			<swiper-item v-for="(item,index) in newlist" :key="index">
 				<scroll-view scroll-y :style="'height:'+scrollH+'px'" @scrolltolower="loadmore(index)">
-					
-					<block v-for="(item2,index2) in item.list" :key="index2">
-						<CommonList :item='item2' :index="index2" @follow="follow" @doSupport='doSupport' ></CommonList>
-						<divider></divider>
-					</block>
-					
-					<!--加载栏-->
-					<load-more :loadmore='item.loadmore'></load-more>
+					<template v-if="item.list.length>0">
+						<block v-for="(item2,index2) in item.list" :key="index2">
+							<CommonList :item='item2' :index="index2" @follow="follow" @doSupport='doSupport' ></CommonList>
+							<divider></divider>
+						</block>
+						<!--加载栏-->
+						<load-more :loadmore='item.loadmore'></load-more>
+					</template>
+					<!--没有数据-->
+					<template v-else>
+						
+						<no-thing></no-thing>
+					</template>
 				</scroll-view>
 			</swiper-item>
 		</swiper>
 	</view>
 </template>
 
-<script>
+<script> 
+
+	const demo=[{
+			username:'小龙',
+			userpic:'../../static/default.jpg',
+			newtime:'2022-7-18 下午15：28',
+			isFollow:false,
+			title:'标题',
+			titlepic:'/static/demo/datapic/1.jpg',
+			support:{
+				type:'support',
+				support_count:1,
+				unsupport_count:2,
+			},
+			comment_count:2,
+			share_num:90
+			},
+			{
+				username:'小龙',
+				userpic:'../../static/default.jpg',
+				newtime:'2022-7-18 下午15：28',
+				isFollow:false,
+				title:'标题',
+				titlepic:'/static/demo/datapic/1.jpg',
+				support:{
+					type:'support',
+					support_count:1,
+					unsupport_count:2,
+				},
+					comment_count:2,
+					share_num:90
+			}]
 	import CommonList from '@/components/common/common-list.vue'
-	import loadMore from '@/components/common/load-more/load-more.vue'
+	import loadMore from '@/components/common/load-more.vue'
 	export default {
 		data() {
 			return {
@@ -59,6 +95,12 @@
 				newlist:[]
 			}
 		},
+		//监听点击导航栏跳转
+		onNavigationBarSearchInputClicked() {
+			uni.navigateTo({
+				url:'../search/search'
+			})
+		},
 		onLoad() {
 			uni.getSystemInfo({
 				success: (res) => {
@@ -74,36 +116,11 @@
 					var obj={
 						//加载类型
 						loadmore:'上拉加载更多',
-						list:[{
-								username:'小龙',
-								userpic:'../../static/default.jpg',
-								newtime:'2022-7-18 下午15：28',
-								isFollow:false,
-								title:'标题',
-								titlepic:'/static/demo/datapic/1.jpg',
-								support:{
-									type:'support',
-									support_count:1,
-									unsupport_count:2,
-								},
-								comment_count:2,
-								share_num:90
-								},
-								{
-									username:'小龙',
-									userpic:'../../static/default.jpg',
-									newtime:'2022-7-18 下午15：28',
-									isFollow:false,
-									title:'标题',
-									titlepic:'/static/demo/datapic/1.jpg',
-									support:{
-										type:'support',
-										support_count:1,
-										unsupport_count:2,
-									},
-										comment_count:2,
-										share_num:90
-								}]
+						list:[],
+						
+					}
+					if(i<3){
+						obj.list=demo
 					}
 					arr.push(obj)
 				}
