@@ -101,6 +101,12 @@
 				url:'../search/search'
 			})
 		},
+		//监听点击导航栏按钮
+		onNavigationBarButtonTap(){
+			uni.navigateTo({
+				url:'../add/add'
+			})
+		},
 		onLoad() {
 			uni.getSystemInfo({
 				success: (res) => {
