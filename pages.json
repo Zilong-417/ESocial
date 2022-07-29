@@ -105,9 +105,9 @@
         ,{
             "path" : "pages/add/add",
             "style" : {
-			"app-plus":{
-					"titleNView":false
-				}               
+				"app-plus":{
+						"titleNView":false
+					}               
             }
             
         }
